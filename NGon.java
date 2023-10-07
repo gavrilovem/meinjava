@@ -16,20 +16,20 @@ public class NGon implements IPolyPoint, IShape {
         return p.clone();
     }
 
-    public Point2D getP(int i) throws IndexOutOfBoundsException {
+    public Point2D getP(int i) throws IllegalArgumentException {
         if (i < n && i >= 0) {
             return p[i];
-        } else throw new IndexOutOfBoundsException("Non-exsistent index " + i);
+        } else throw new IllegalArgumentException("Non-exsistent index " + i);
     }
 
     public void setP(Point2D[] p) {
         this.p = p;
     }
 
-    public void setP(Point2D p, int i) throws IndexOutOfBoundsException {
+    public void setP(Point2D p, int i) throws IllegalArgumentException {
         if (i < n && i >= 0) {
             this.p[i] = p;
-        } else throw new IndexOutOfBoundsException("Non-exsistent index " + i);
+        } else throw new IllegalArgumentException("Non-exsistent index " + i);
     }
 
     public double square() {
