@@ -43,22 +43,7 @@ public class Circle implements IShape {
                 return true;
             }
             return false;
-        }
-        Point2D[] pi;
-        if (i instanceof Polyline) pi = ((Polyline) i).getP();
-        else if (i instanceof NGon) pi = ((NGon) i).getP();
-        else if (i instanceof Segment) {
-            pi = new Point2D[2];
-            pi[0] = ((Segment) i).getStart();
-            pi[1] = ((Segment) i).getFinish();
-        } else throw new IllegalArgumentException("Unsupported data argument provided");
-
-        for (int j = 1; j < pi.length; j++) {
-            if (Point2D.pointToLineDistance(pi[j], pi[j-1], this.p) <= this.r) {
-                return true;
-            }
-        }
-        return false;
+        } else throw new IllegalArgumentException("Argument nust be type of Circle");
     }
     public String toString() {
         return "Circle: {" + "r: " + r + "; p: " + p.toString() + "}";

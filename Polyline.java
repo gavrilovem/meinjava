@@ -52,37 +52,22 @@ public class Polyline extends OpenFigure implements IPolyPoint {
     public Polyline symAxis(int i) {
         Point2D[] np = new Point2D[n];
         for (int j = 0; j < n; j++) {
-            np[i] = new Point2D(p[i].symAxis(i).getX());
+            np[j] = new Point2D(p[j].symAxis(i).getX());
         }
-        return new Polyline(p);
+        return new Polyline(np);
     }
     public boolean cross(IShape i) throws IllegalArgumentException {
-        if (i instanceof Circle) {
-            Circle in = (Circle) i;
+        if (i instanceof Polyline) {
+            Point2D[] pi = ((Polyline) i).getP();
             for (int j = 1; j < n; j++) {
-                if (Point2D.pointToLineDistance(p[j], p[j-1], in.getP()) <= in.getR()) {
-                    return true;
+                for (int ji = 1; ji < pi.length; ji++) {
+                    if (Point2D.linesIntersect(p[j - 1], p[j], pi[ji], pi[ji - 1])) {
+                        return true;
+                    }
                 }
             }
             return false;
-        }
-        Point2D[] pi;
-        if (i instanceof Polyline) pi = ((Polyline) i).getP();
-        else if (i instanceof NGon) pi = ((NGon) i).getP();
-        else if (i instanceof Segment) {
-            pi = new Point2D[2];
-            pi[0] = ((Segment) i).getStart();
-            pi[1] = ((Segment) i).getFinish();
-        } else throw new IllegalArgumentException("Unsupported data argument provided");
-
-        for (int j = 1; j < n; j++) {
-            for (int ji = 1; ji < pi.length; ji++) {
-                if (Point2D.linesIntersect(p[j - 1], p[j], pi[ji], pi[ji - 1])) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        } else throw new IllegalArgumentException("Argument must be type of Polyline");
     }
     public String toString() {
         String s = "Polyline: {" + "n: " + n + "; p: ";

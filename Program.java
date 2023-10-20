@@ -55,7 +55,7 @@ public class Program
             double squares = 0;
             double length = 0;
             for (int i = 0; i < list.size(); i++) {
-                System.out.print(list.get(i).toString() + "\n");
+                System.out.print(list2.get(i).toString() + "\n");
                 squares += list.get(i).square();
                 length += list.get(i).length();
             }

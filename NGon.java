@@ -73,37 +73,28 @@ public class NGon implements IPolyPoint, IShape {
     }
 
     public boolean cross(IShape i) {
-        try {
-            if (i instanceof Circle) {
-                Circle in = (Circle) i;
+            if (i instanceof NGon) {
+                Point2D[] pi = ((NGon) i).getP();
                 for (int j = 1; j < n; j++) {
-                    if (Point2D.pointToLineDistance(p[j], p[j-1], in.getP()) <= in.getR()) {
+                    for (int ji = 1; ji < pi.length; ji++) {
+                        if (Point2D.linesIntersect(p[j - 1], p[j], pi[ji], pi[ji - 1])) {
                             return true;
+                        }
                     }
-                }
-                return false;
-            }
-            Point2D[] pi;
-            if (i instanceof Polyline) pi = ((Polyline) i).getP();
-            else if (i instanceof NGon) pi = ((NGon) i).getP();
-            else if (i instanceof Segment) {
-                pi = new Point2D[2];
-                pi[0] = ((Segment) i).getStart();
-                pi[1] = ((Segment) i).getFinish();
-            } else throw new IllegalArgumentException("Unsupported data argument provided");
-
-            for (int j = 1; j < n; j++) {
-                for (int ji = 1; ji < pi.length; ji++) {
-                    if (Point2D.linesIntersect(p[j - 1], p[j], pi[ji], pi[ji - 1])) {
+                    if (Point2D.linesIntersect(p[j - 1], p[j], pi[0], pi[pi.length - 1])) {
                         return true;
                     }
                 }
-            }
-            return false;
-        } catch (IllegalArgumentException e) {
-            System.out.println(e);
-        }
-        return false;
+                for (int ji = 1; ji < pi.length; ji++) {
+                    if (Point2D.linesIntersect(p[p.length - 1], p[0], pi[ji], pi[ji - 1])) {
+                        return true;
+                    }
+                }
+                if (Point2D.linesIntersect(p[p.length - 1], p[0], pi[0], pi[pi.length - 1])) {
+                    return true;
+                }
+                return false;
+            } else throw new IllegalArgumentException("Argument must be type of NGon");
     }
 
     public String toString() {
